@@ -4,7 +4,7 @@ var GAP = 10;
 
 var CLOUD_HEIGHT = 270;
 var CLOUD_WIDTH = 420;
-var CLOUD_X = 150; // Сменить на 100
+var CLOUD_X = 100;
 var CLOUD_Y = 10;
 var CLOUD_COLOR = '#fff';
 var CLOUD_SHADOW_COLOR = 'rgba(0, 0, 0, 0.7)';
