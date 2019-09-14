@@ -17,32 +17,18 @@ var BAR_GAP = 50;
 var BAR_YOU_TEXT = 'Вы';
 var BAR_YOU_COLOR = 'rgba(255, 0, 0, 1)';
 
-/**
- * Отрисовка прямоугольника
- * @param {*} ctx
- * @param integer x Координата X
- * @param integer y Координата y
- * @param string color Цвет заливки прямоугальника
- */
 var renderCloud = function (ctx, x, y, color) {
   ctx.fillStyle = color;
   ctx.fillRect(x, y, CLOUD_WIDTH, CLOUD_HEIGHT);
 };
 
-/**
- * Поиск максимального значения в массиве
- * @param array times
- */
 var getMaxElement = function (times) {
   return Math.max.apply(null, times);
-}
+};
 
-/**
- * Вычисление случайного синего цвета
- */
 var getRandomBlueColor = function () {
-  return 'hsl(240,100%,' + Math.floor(Math.random() * 100) + '%)'
-}
+  return 'hsl(240,100%,' + Math.floor(Math.random() * 100) + '%)';
+};
 
 window.renderStatistics = function (ctx, names, times) {
   // Высисление максимального результата для составления пропорции
@@ -73,7 +59,7 @@ window.renderStatistics = function (ctx, names, times) {
 
     // Вычисляем цвет заливки для элемента графика
     if (names[i] === BAR_YOU_TEXT) {
-      ctx.fillStyle = 'red';
+      ctx.fillStyle = BAR_YOU_COLOR;
     } else {
       ctx.fillStyle = getRandomBlueColor();
     }
@@ -91,4 +77,4 @@ window.renderStatistics = function (ctx, names, times) {
     // Добавлеяем отступ ширины колонки
     currentX += BAR_WIDTH;
   }
-}
+};
