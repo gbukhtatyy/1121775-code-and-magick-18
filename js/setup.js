@@ -39,6 +39,8 @@ var SETUP_EYES_COLOR = [
   'green'
 ];
 
+var WIZARDS_NUMBER = 4;
+
 var getRandomInt = function (max) {
   return Math.floor(Math.random() * Math.floor(max));
 };
@@ -71,7 +73,7 @@ var similarWizzardTemplate = document.querySelector('#similar-wizard-template')
   .content
   .querySelector('.setup-similar-item');
 
-var wizards = getRandomWizards(4);
+var wizards = getRandomWizards(WIZARDS_NUMBER);
 
 var fragment = document.createDocumentFragment();
 
