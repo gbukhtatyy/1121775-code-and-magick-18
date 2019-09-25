@@ -1,5 +1,7 @@
 'use strict';
 
+var KEY_CODE_ESC = 27;
+
 var SETUP_NAMES = [
   'Иван',
   'Хуан Себастьян',
@@ -39,6 +41,14 @@ var SETUP_EYES_COLOR = [
   'green'
 ];
 
+var SETUP_FIREBALL_COLOR = [
+  '#ee4830',
+  '#30a8ee',
+  '#5ce6c0',
+  '#e848d5',
+  '#e6e848'
+];
+
 var WIZARDS_NUMBER = 4;
 
 var getRandomInt = function (max) {
@@ -65,7 +75,7 @@ var getRandomWizards = function (amount) {
 };
 
 var userDialog = document.querySelector('.setup');
-userDialog.classList.remove('hidden');
+// userDialog.classList.remove('hidden');
 
 var similarListElement = document.querySelector('.setup-similar-list');
 
@@ -90,3 +100,66 @@ for (var i = 0; i < wizards.length; i++) {
 similarListElement.appendChild(fragment);
 
 document.querySelector('.setup-similar').classList.remove('hidden');
+
+var openSetupPopup = function () {
+  if (userDialog.classList.contains('hidden')) {
+    userDialog.classList.remove('hidden');
+  }
+};
+
+var closeSetupPopup = function () {
+  if (!userDialog.classList.contains('hidden')) {
+    userDialog.classList.add('hidden');
+  }
+};
+
+var setupOpenElement = document.querySelector('.setup-open');
+var setupCloseElement = document.querySelector('.setup-close');
+
+setupOpenElement.addEventListener('click', function () {
+  openSetupPopup();
+});
+
+setupCloseElement.addEventListener('click', function () {
+  closeSetupPopup();
+});
+
+
+// Изменение цвета мантии персонажа по нажатию
+var wizardCoatElement = document.querySelector('.setup-wizard .wizard-coat');
+var wizardCoatInputElement = document.querySelector('.setup input[name=coat-color]');
+
+var wizardCoatClickHandler = function () {
+  var colorCoat = getRandomElementArray(SETUP_COAT_COLORS);
+
+  wizardCoatInputElement.value = colorCoat;
+  wizardCoatElement.style.fill = colorCoat;
+};
+
+wizardCoatElement.addEventListener('click', wizardCoatClickHandler);
+
+// Изменение цвета глаз персонажа по нажатию
+var wizardEyesElement = document.querySelector('.setup-wizard .wizard-eyes');
+var wizardEyesInputElement = document.querySelector('.setup input[name=eyes-color]');
+
+var wizardEyesClickHandler = function () {
+  var colorEyes = getRandomElementArray(SETUP_EYES_COLOR);
+
+  wizardEyesInputElement.value = colorEyes;
+  wizardEyesElement.style.fill = colorEyes;
+};
+
+// Изменение цвета фаерболов по нажатию
+wizardEyesElement.addEventListener('click', wizardEyesClickHandler);
+
+var wizardFireballElement = document.querySelector('.setup-fireball-wrap');
+var wizardFireballInputElement = document.querySelector('.setup input[name=fireball-color]');
+
+var wizardFireballClickHandler = function () {
+  var colorFireball = getRandomElementArray(SETUP_FIREBALL_COLOR);
+
+  wizardFireballInputElement.value = colorFireball;
+  wizardFireballElement.style.backgroundColor = colorFireball;
+};
+
+wizardFireballElement.addEventListener('click', wizardFireballClickHandler);
