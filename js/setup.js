@@ -1,6 +1,7 @@
 'use strict';
 
 var KEY_CODE_ESC = 27;
+var KEY_CODE_ENTER = 13;
 
 var SETUP_NAMES = [
   'Иван',
@@ -101,29 +102,64 @@ similarListElement.appendChild(fragment);
 
 document.querySelector('.setup-similar').classList.remove('hidden');
 
-var openSetupPopup = function () {
-  if (userDialog.classList.contains('hidden')) {
-    userDialog.classList.remove('hidden');
+var setupOpenElement = document.querySelector('.setup-open');
+var setupCloseElement = document.querySelector('.setup-close');
+var setupFormElement = document.querySelector('.setup-wizard-form');
+var setupSubmitElement = document.querySelector('.setup-submit');
+var setupUserNameElement = document.querySelector('.setup-user-name');
+
+var onSetupPopupEscPress = function (evt) {
+  // Если фокус находится на форме ввода имени, то окно закрываться не должно
+  if (event.target === setupUserNameElement) {
+    return;
   }
+
+  // Когда окно настройки персонажа открыто, нажатие на клавишу ESC должно закрывать диалог
+  if (evt.keyCode === KEY_CODE_ESC) {
+    closeSetupPopup();
+  }
+};
+
+var openSetupPopup = function () {
+  userDialog.classList.remove('hidden');
+
+  document.addEventListener('keydown', onSetupPopupEscPress);
 };
 
 var closeSetupPopup = function () {
-  if (!userDialog.classList.contains('hidden')) {
-    userDialog.classList.add('hidden');
-  }
+  userDialog.classList.add('hidden');
+  document.removeEventListener('keydown', onSetupPopupEscPress);
 };
 
-var setupOpenElement = document.querySelector('.setup-open');
-var setupCloseElement = document.querySelector('.setup-close');
+var submitSetupPopup = function () {
+  setupFormElement.submit();
+};
 
 setupOpenElement.addEventListener('click', function () {
   openSetupPopup();
+});
+
+setupOpenElement.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === KEY_CODE_ENTER) {
+    openSetupPopup();
+  }
 });
 
 setupCloseElement.addEventListener('click', function () {
   closeSetupPopup();
 });
 
+setupCloseElement.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === KEY_CODE_ENTER) {
+    closeSetupPopup();
+  }
+});
+
+setupSubmitElement.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === KEY_CODE_ENTER) {
+    submitSetupPopup();
+  }
+});
 
 // Изменение цвета мантии персонажа по нажатию
 var wizardCoatElement = document.querySelector('.setup-wizard .wizard-coat');
