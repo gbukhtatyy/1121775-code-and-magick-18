@@ -155,7 +155,7 @@
     }
   });
 
-  window.util.initializationMove(userDialog, document.querySelector('.upload'));
+  window.util.initializationMove(userDialog, document.querySelector('.upload'), document.querySelector('.upload input'));
 
   // Изменение цвета мантии персонажа по нажатию
   var wizardCoatElement = document.querySelector('.setup-wizard .wizard-coat');

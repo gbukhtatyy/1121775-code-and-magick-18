@@ -17,10 +17,22 @@
       return array[window.util.getRandomInt(array.length)];
     },
 
-    initializationMove: function (element, elementTrigger) {
+    initializationMove: function (element, elementTrigger, elementStop) {
       var mousePosition;
       var isDown = false;
+      var isClickForStop = false;
       var offset = [0, 0];
+
+      var clickElementStopHandler = function (evt) {
+        if (isClickForStop) {
+          evt.preventDefault();
+          isClickForStop = false;
+        }
+      };
+
+      if (elementStop) {
+        elementStop.addEventListener('click', clickElementStopHandler);
+      }
 
       elementTrigger.addEventListener('mousedown', function (evt) {
         isDown = true;
@@ -37,6 +49,7 @@
       document.addEventListener('mousemove', function (evt) {
         evt.preventDefault();
         if (isDown) {
+          isClickForStop = true;
           mousePosition = {
             x: evt.clientX,
             y: evt.clientY
