@@ -110,7 +110,8 @@
     }
   };
 
-  var openSetupPopup = function () {
+  var openSetupPopup = function (evt) {
+    evt.preventDefault();
     userDialog.style.top = '80px';
     userDialog.style.left = '50%';
 
@@ -128,13 +129,13 @@
     setupFormElement.submit();
   };
 
-  setupOpenElement.addEventListener('click', function () {
-    openSetupPopup();
+  setupOpenElement.addEventListener('click', function (evt) {
+    openSetupPopup(evt);
   });
 
   setupOpenElement.addEventListener('keydown', function (evt) {
     if (evt.keyCode === window.util.KEY_CODE_ENTER) {
-      openSetupPopup();
+      openSetupPopup(evt);
     }
   });
 
