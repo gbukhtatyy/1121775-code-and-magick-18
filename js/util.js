@@ -17,46 +17,54 @@
       return array[window.util.getRandomInt(array.length)];
     },
 
-    initializationMove: function (element, elementTrigger, elementStop) {
-      var mousePosition;
-      var isDown = false;
-      var isClickForStop = false;
-      var offset = [0, 0];
-
-      var clickElementStopHandler = function (evt) {
-        if (isClickForStop) {
-          evt.preventDefault();
-          isClickForStop = false;
-        }
-      };
-
-      if (elementStop) {
-        elementStop.addEventListener('click', clickElementStopHandler);
-      }
-
+    initializationMove: function (element, elementTrigger) {
       elementTrigger.addEventListener('mousedown', function (evt) {
-        isDown = true;
-        offset = [
-          element.offsetLeft - evt.clientX,
-          element.offsetTop - evt.clientY
-        ];
-      });
-
-      document.addEventListener('mouseup', function () {
-        isDown = false;
-      });
-
-      document.addEventListener('mousemove', function (evt) {
         evt.preventDefault();
-        if (isDown) {
-          isClickForStop = true;
-          mousePosition = {
-            x: evt.clientX,
-            y: evt.clientY
+
+        var startCoords = {
+          x: evt.clientX,
+          y: evt.clientY
+        };
+
+        var dragged = false;
+
+        var onMouseMove = function (moveEvt) {
+          moveEvt.preventDefault();
+          dragged = true;
+
+          var shift = {
+            x: startCoords.x - moveEvt.clientX,
+            y: startCoords.y - moveEvt.clientY
           };
-          element.style.left = (mousePosition.x + offset[0]) + 'px';
-          element.style.top = (mousePosition.y + offset[1]) + 'px';
-        }
+
+          startCoords = {
+            x: moveEvt.clientX,
+            y: moveEvt.clientY
+          };
+
+          element.style.top = (element.offsetTop - shift.y) + 'px';
+          element.style.left = (element.offsetLeft - shift.x) + 'px';
+
+        };
+
+        var onMouseUp = function (upEvt) {
+          upEvt.preventDefault();
+
+          document.removeEventListener('mousemove', onMouseMove);
+          document.removeEventListener('mouseup', onMouseUp);
+
+          if (dragged) {
+            var onClickPreventDefault = function (clickEvt) {
+              clickEvt.preventDefault();
+              element.removeEventListener('click', onClickPreventDefault);
+            };
+            element.addEventListener('click', onClickPreventDefault);
+          }
+
+        };
+
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
       });
     }
   };
