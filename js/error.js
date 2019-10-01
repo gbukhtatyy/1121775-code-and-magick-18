@@ -29,9 +29,6 @@
       messageElement.querySelector('.error__close').addEventListener('click', errorCloseHandler(messageElement));
 
       document.querySelector('body').appendChild(messageElement);
-    },
-    close: function () {
-
     }
   };
 })();
