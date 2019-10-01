@@ -66,29 +66,52 @@
   };
 
   var userDialog = document.querySelector('.setup');
-  // userDialog.classList.remove('hidden');
-
+  var setupWizardForm = document.querySelector('.setup-wizard-form');
   var similarListElement = document.querySelector('.setup-similar-list');
+
+  var submitLoadSetupWizardFormHandeler = function (response) {
+    console.log(response);
+    closeSetupPopup();
+  };
+  var submitErrorSetupWizardFormHandeler = function (message) {
+    window.error.show(message);
+  };
+
+  setupWizardForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+
+    var data = new FormData(setupWizardForm);
+
+    window.backend.save(data, submitLoadSetupWizardFormHandeler, submitErrorSetupWizardFormHandeler);
+  });
 
   var similarWizzardTemplate = document.querySelector('#similar-wizard-template')
     .content
     .querySelector('.setup-similar-item');
 
-  var wizards = getRandomWizards(WIZARDS_NUMBER);
+  var loadGetWizardsHandler = function (wizards) {
+    var showWizards = window.util.getRandomElementsArray(wizards, WIZARDS_NUMBER);
 
-  var fragment = document.createDocumentFragment();
+    var fragment = document.createDocumentFragment();
 
-  for (var i = 0; i < wizards.length; i++) {
-    var wizzardElement = similarWizzardTemplate.cloneNode(true);
+    for (var i = 0; i < showWizards.length; i++) {
+      var wizzardElement = similarWizzardTemplate.cloneNode(true);
 
-    wizzardElement.querySelector('.setup-similar-label').textContent = wizards[i].name + ' ' + wizards[i].surname;
-    wizzardElement.querySelector('.wizard-coat').style.fill = wizards[i].coatColor;
-    wizzardElement.querySelector('.wizard-eyes').style.fill = wizards[i].eyesColor;
+      wizzardElement.querySelector('.setup-similar-label').textContent = showWizards[i].name;
+      wizzardElement.querySelector('.wizard-coat').style.fill = showWizards[i].colorCoat;
+      wizzardElement.querySelector('.wizard-eyes').style.fill = showWizards[i].colorEyes;
 
-    fragment.appendChild(wizzardElement);
-  }
+      fragment.appendChild(wizzardElement);
+    }
 
-  similarListElement.appendChild(fragment);
+    similarListElement.appendChild(fragment);
+  };
+
+  var errorGetWizardsHandler = function (message) {
+    window.error.show(message);
+  };
+
+  window.backend.load(loadGetWizardsHandler, errorGetWizardsHandler);
 
   document.querySelector('.setup-similar').classList.remove('hidden');
 
