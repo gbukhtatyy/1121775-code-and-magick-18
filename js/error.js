@@ -20,7 +20,7 @@
     show: function (message) {
       removeErrors();
 
-      var messageElement = document.createElement("div");
+      var messageElement = document.createElement('div');
       messageElement.classList.add('error');
 
       messageElement.innerHTML = template;

@@ -1,28 +1,6 @@
 'use strict';
 
 (function () {
-  var SETUP_NAMES = [
-    'Иван',
-    'Хуан Себастьян',
-    'Мария',
-    'Кристоф',
-    'Виктор',
-    'Юлия',
-    'Люпита',
-    'Вашингтон'
-  ];
-
-  var SETUP_SURNAMES = [
-    'да Марья',
-    'Верон',
-    'Мирабелла',
-    'Вальц',
-    'Онопко',
-    'Топольницкая',
-    'Нионго',
-    'Ирвинг'
-  ];
-
   var SETUP_COAT_COLORS = [
     'rgb(101, 137, 164)',
     'rgb(241, 43, 107)',
@@ -50,27 +28,12 @@
 
   var WIZARDS_NUMBER = 4;
 
-  var getRandomWizards = function (amount) {
-    var characters = [];
-
-    for (var i = 0; i < amount; i++) {
-      characters.push({
-        name: window.util.getRandomElementArray(SETUP_NAMES),
-        surname: window.util.getRandomElementArray(SETUP_SURNAMES),
-        coatColor: window.util.getRandomElementArray(SETUP_COAT_COLORS),
-        eyesColor: window.util.getRandomElementArray(SETUP_EYES_COLOR),
-      });
-    }
-
-    return characters;
-  };
 
   var userDialog = document.querySelector('.setup');
   var setupWizardForm = document.querySelector('.setup-wizard-form');
   var similarListElement = document.querySelector('.setup-similar-list');
 
-  var submitLoadSetupWizardFormHandeler = function (response) {
-    console.log(response);
+  var submitLoadSetupWizardFormHandeler = function () {
     closeSetupPopup();
   };
   var submitErrorSetupWizardFormHandeler = function (message) {

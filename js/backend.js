@@ -3,8 +3,8 @@
 (function () {
   var METHOD_LOAD = 'GET';
   var METHOD_SAVE = 'POST';
-  var URL_LOAD = "https://js.dump.academy/code-and-magick/data";
-  var URL_SAVE = "https://js.dump.academy/code-and-magick";
+  var URL_LOAD = 'https://js.dump.academy/code-and-magick/data';
+  var URL_SAVE = 'https://js.dump.academy/code-and-magick';
 
   var sendXMLHttpRequest = function (url, method, data, onLoad, onError) {
     var xhr = new XMLHttpRequest();
