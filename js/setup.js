@@ -28,10 +28,19 @@
 
   var WIZARDS_NUMBER = 4;
 
-
   var userDialog = document.querySelector('.setup');
   var setupWizardForm = document.querySelector('.setup-wizard-form');
   var similarListElement = document.querySelector('.setup-similar-list');
+
+  var setupOpenElement = document.querySelector('.setup-open');
+  var setupCloseElement = document.querySelector('.setup-close');
+  var setupFormElement = document.querySelector('.setup-wizard-form');
+  var setupSubmitElement = document.querySelector('.setup-submit');
+  var setupUserNameElement = document.querySelector('.setup-user-name');
+
+  var similarWizzardTemplate = document.querySelector('#similar-wizard-template')
+    .content
+    .querySelector('.setup-similar-item');
 
   var submitLoadSetupWizardFormHandeler = function () {
     closeSetupPopup();
@@ -48,21 +57,18 @@
     window.backend.save(data, submitLoadSetupWizardFormHandeler, submitErrorSetupWizardFormHandeler);
   });
 
-  var similarWizzardTemplate = document.querySelector('#similar-wizard-template')
-    .content
-    .querySelector('.setup-similar-item');
-
   var loadGetWizardsHandler = function (wizards) {
-    var showWizards = window.util.getRandomElementsArray(wizards, WIZARDS_NUMBER);
+    similarListElement.innerHTML = '';
+    var wizards = window.util.getRandomElementsArray(wizards, WIZARDS_NUMBER);
 
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < showWizards.length; i++) {
+    for (var i = 0; i < wizards.length; i++) {
       var wizzardElement = similarWizzardTemplate.cloneNode(true);
 
-      wizzardElement.querySelector('.setup-similar-label').textContent = showWizards[i].name;
-      wizzardElement.querySelector('.wizard-coat').style.fill = showWizards[i].colorCoat;
-      wizzardElement.querySelector('.wizard-eyes').style.fill = showWizards[i].colorEyes;
+      wizzardElement.querySelector('.setup-similar-label').textContent = wizards[i].name;
+      wizzardElement.querySelector('.wizard-coat').style.fill = wizards[i].colorCoat;
+      wizzardElement.querySelector('.wizard-eyes').style.fill = wizards[i].colorEyes;
 
       fragment.appendChild(wizzardElement);
     }
@@ -74,15 +80,13 @@
     window.error.show(message);
   };
 
-  window.backend.load(loadGetWizardsHandler, errorGetWizardsHandler);
+  var showWizards = function () {
+    window.backend.load(loadGetWizardsHandler, errorGetWizardsHandler);
+  };
+
+  showWizards();
 
   document.querySelector('.setup-similar').classList.remove('hidden');
-
-  var setupOpenElement = document.querySelector('.setup-open');
-  var setupCloseElement = document.querySelector('.setup-close');
-  var setupFormElement = document.querySelector('.setup-wizard-form');
-  var setupSubmitElement = document.querySelector('.setup-submit');
-  var setupUserNameElement = document.querySelector('.setup-user-name');
 
   var onSetupPopupEscPress = function (evt) {
     // Если фокус находится на форме ввода имени, то окно закрываться не должно
@@ -147,37 +151,42 @@
   var wizardCoatElement = document.querySelector('.setup-wizard .wizard-coat');
   var wizardCoatInputElement = document.querySelector('.setup input[name=coat-color]');
 
-  var wizardCoatClickHandler = function () {
+  var wizardCoatClickHandler = window.debounce(function () {
     var colorCoat = window.util.getRandomElementArray(SETUP_COAT_COLORS);
 
     wizardCoatInputElement.value = colorCoat;
     wizardCoatElement.style.fill = colorCoat;
-  };
 
+    showWizards();
+  });
   wizardCoatElement.addEventListener('click', wizardCoatClickHandler);
 
   // Изменение цвета глаз персонажа по нажатию
   var wizardEyesElement = document.querySelector('.setup-wizard .wizard-eyes');
   var wizardEyesInputElement = document.querySelector('.setup input[name=eyes-color]');
 
-  var wizardEyesClickHandler = function () {
+  var wizardEyesClickHandler = window.debounce(function () {
     var colorEyes = window.util.getRandomElementArray(SETUP_EYES_COLOR);
 
     wizardEyesInputElement.value = colorEyes;
     wizardEyesElement.style.fill = colorEyes;
-  };
+
+    showWizards();
+  });
   wizardEyesElement.addEventListener('click', wizardEyesClickHandler);
 
   // Изменение цвета фаерболов по нажатию
   var wizardFireballElement = document.querySelector('.setup-fireball-wrap');
   var wizardFireballInputElement = document.querySelector('.setup input[name=fireball-color]');
 
-  var wizardFireballClickHandler = function () {
+  var wizardFireballClickHandler = window.debounce(function () {
     var colorFireball = window.util.getRandomElementArray(SETUP_FIREBALL_COLOR);
 
     wizardFireballInputElement.value = colorFireball;
     wizardFireballElement.style.backgroundColor = colorFireball;
-  };
+
+    showWizards();
+  });
 
   wizardFireballElement.addEventListener('click', wizardFireballClickHandler);
 })();
