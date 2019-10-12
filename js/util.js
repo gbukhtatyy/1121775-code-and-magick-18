@@ -10,6 +10,30 @@
     KEY_CODE_ENTER: KEY_CODE_ENTER,
 
     /**
+     * Выполение функции при нажатой клавиши ESC
+     *
+     * @param {Object} evt объект события
+     * @param {*} action функция для выполнения
+     */
+    isEscEvent: function (evt, action) {
+      if (evt.keyCode === KEY_CODE_ESC) {
+        action();
+      }
+    },
+
+    /**
+     * Выполение функции при нажатой клавиши Enter
+     *
+     * @param {Object} evt объект события
+     * @param {*} action функция для выполнения
+     */
+    isEnterEvent: function (evt, action) {
+      if (evt.keyCode === KEY_CODE_ENTER) {
+        action();
+      }
+    },
+
+    /**
      * Получение случайного числа в заданном диапозоне
      *
      * @param {number} max максимальное значение
@@ -53,6 +77,11 @@
       return window.util.shuffleArray(array).slice(0, amount);
     },
 
+    /**
+     * Инициализация возможности перемещения element по клику elementTrigger
+     * @param {*} element
+     * @param {*} elementTrigger
+     */
     initializationMove: function (element, elementTrigger) {
       elementTrigger.addEventListener('mousedown', function (evt) {
         evt.preventDefault();
