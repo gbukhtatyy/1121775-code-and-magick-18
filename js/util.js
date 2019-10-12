@@ -57,10 +57,7 @@
       elementTrigger.addEventListener('mousedown', function (evt) {
         evt.preventDefault();
 
-        var startCoords = {
-          x: evt.clientX,
-          y: evt.clientY
-        };
+        var startCoordinate = new window.Coordinate(evt.clientX, evt.clientY);
 
         var dragged = false;
 
@@ -68,19 +65,16 @@
           moveEvt.preventDefault();
           dragged = true;
 
-          var shift = {
-            x: startCoords.x - moveEvt.clientX,
-            y: startCoords.y - moveEvt.clientY
-          };
+          var shiftCoordinate = new window.Coordinate(startCoordinate.x, startCoordinate.y);
+          shiftCoordinate.sub(new window.Coordinate(moveEvt.clientX, moveEvt.clientY));
 
-          startCoords = {
-            x: moveEvt.clientX,
-            y: moveEvt.clientY
-          };
+          startCoordinate.fill(moveEvt.clientX, moveEvt.clientY);
 
-          element.style.top = (element.offsetTop - shift.y) + 'px';
-          element.style.left = (element.offsetLeft - shift.x) + 'px';
+          var offsetCoordinate = new window.Coordinate(element.offsetLeft, element.offsetTop);
+          offsetCoordinate.sub(shiftCoordinate);
 
+          element.style.top = offsetCoordinate.y + 'px';
+          element.style.left = offsetCoordinate.x + 'px';
         };
 
         var onMouseUp = function (upEvt) {
