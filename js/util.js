@@ -10,6 +10,30 @@
     KEY_CODE_ENTER: KEY_CODE_ENTER,
 
     /**
+     * Выполение функции при нажатой клавиши ESC
+     *
+     * @param {Object} evt объект события
+     * @param {*} action функция для выполнения
+     */
+    isEscEvent: function (evt, action) {
+      if (evt.keyCode === KEY_CODE_ESC) {
+        action();
+      }
+    },
+
+    /**
+     * Выполение функции при нажатой клавиши Enter
+     *
+     * @param {Object} evt объект события
+     * @param {*} action функция для выполнения
+     */
+    isEnterEvent: function (evt, action) {
+      if (evt.keyCode === KEY_CODE_ENTER) {
+        action();
+      }
+    },
+
+    /**
      * Получение случайного числа в заданном диапозоне
      *
      * @param {number} max максимальное значение
@@ -53,14 +77,16 @@
       return window.util.shuffleArray(array).slice(0, amount);
     },
 
+    /**
+     * Инициализация возможности перемещения element по клику elementTrigger
+     * @param {*} element
+     * @param {*} elementTrigger
+     */
     initializationMove: function (element, elementTrigger) {
       elementTrigger.addEventListener('mousedown', function (evt) {
         evt.preventDefault();
 
-        var startCoords = {
-          x: evt.clientX,
-          y: evt.clientY
-        };
+        var startCoordinate = new window.Coordinate(evt.clientX, evt.clientY);
 
         var dragged = false;
 
@@ -68,19 +94,16 @@
           moveEvt.preventDefault();
           dragged = true;
 
-          var shift = {
-            x: startCoords.x - moveEvt.clientX,
-            y: startCoords.y - moveEvt.clientY
-          };
+          var shiftCoordinate = new window.Coordinate(startCoordinate.x, startCoordinate.y);
+          shiftCoordinate.sub(new window.Coordinate(moveEvt.clientX, moveEvt.clientY));
 
-          startCoords = {
-            x: moveEvt.clientX,
-            y: moveEvt.clientY
-          };
+          startCoordinate.fill(moveEvt.clientX, moveEvt.clientY);
 
-          element.style.top = (element.offsetTop - shift.y) + 'px';
-          element.style.left = (element.offsetLeft - shift.x) + 'px';
+          var offsetCoordinate = new window.Coordinate(element.offsetLeft, element.offsetTop);
+          offsetCoordinate.sub(shiftCoordinate);
 
+          element.style.top = offsetCoordinate.y + 'px';
+          element.style.left = offsetCoordinate.x + 'px';
         };
 
         var onMouseUp = function (upEvt) {
